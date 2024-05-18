@@ -5,7 +5,7 @@ using namespace std;
 
 /*  --------------------------------------------------------------
  This is a partial implementation of a Red-Black Tree (RBT).
- This implementation includes insertion and search functions only.
+ This version includes insertion and search functions only.
  The code is based on the pseudocode given in the book
  "Introduction to Algorithms" by Cormen  ISBN-13: 978-0262033848
 
