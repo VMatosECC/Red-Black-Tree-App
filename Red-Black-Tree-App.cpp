@@ -16,7 +16,7 @@ using namespace std;
 
 
 //Define the color of the nodes
-const int RED = 0;
+const int RED   = 0;
 const int BLACK = 1;
 // Set to trur to enable debug output
 const bool debugFlag = false;
