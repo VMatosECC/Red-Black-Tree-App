@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <vector>
 using namespace std;
 
 /*  --------------------------------------------------------------
@@ -15,15 +14,18 @@ using namespace std;
 
 
 
-// Enum to represent colors of the nodes
-enum class Color { RED, BLACK };
-const bool debugFlag = false;    // Set to trur to enable debug output
+
+//Define the color of the nodes
+const int RED = 0;
+const int BLACK = 1;
+// Set to trur to enable debug output
+const bool debugFlag = false;
 
 // ------------------------ Node structure for Red-Black Tree ------------------------
 template <typename T>
 struct Node {
     T        data;
-    Color    color;
+    int      color;
     Node<T>* parent;
     Node<T>* left;
     Node<T>* right;
@@ -31,7 +33,7 @@ struct Node {
     // Constructor - Accept data, set color to RED and pointers to nullptr 
     Node(T val) {
         data   = val;
-        color  = Color::RED;
+        color  = RED;
         parent = left = right = nullptr;
     }
 
@@ -40,8 +42,8 @@ struct Node {
         if (pn == nullptr)
             return "NULL(BLACK)";
         else
-            return to_string(pn->data) 
-                 + (pn->color == Color::RED ? "(RED)" : "(BLACK)");
+            return to_string(pn->data)
+            + (pn->color == RED ? "(RED)" : "(BLACK)");
     }
 
     void print() const {
@@ -66,7 +68,7 @@ private:
     Node<T>* search(Node<T>* node, const T& val) const;
 
 public:
-     RedBlackTree() : root(nullptr) {}
+    RedBlackTree() : root(nullptr) {}
     ~RedBlackTree();
 
     // Public interface
@@ -89,8 +91,8 @@ void RedBlackTree<T>::insert(const T& val) {
     if (root == nullptr) {
         // If tree is empty, make new node as root and color it black
         root = newNode;
-        root->color = Color::BLACK;
-        if(debugFlag) {root->print(); cout << "\tInserted as root." << endl;}
+        root->color = BLACK;
+        if (debugFlag) { root->print(); cout << "\tInserted as root." << endl; }
         return;
     }
 
@@ -125,7 +127,7 @@ template <typename T>
 void RedBlackTree<T>::fixInsertion(Node<T>* x) {
 
     // Beginning with node x, continue fixing until the tree is a valid Red-Black Tree
-    while (x != root && x->parent->color == Color::RED) {
+    while (x != root && x->parent->color == RED) {
 
         Node<T>* grandparent = x->parent->parent;
         Node<T>* parent = x->parent;
@@ -138,12 +140,12 @@ void RedBlackTree<T>::fixInsertion(Node<T>* x) {
         //Is the parent a left child?
         if (x->parent == x->parent->parent->left) {
             Node<T>* uncle = x->parent->parent->right;
-            if (uncle && uncle->color == Color::RED) {
+            if (uncle && uncle->color == RED) {
                 if (debugFlag) cout << " Case 1: Parent and uncle are both red (RAF)" << endl;
                 // Case 1: Parent and uncle are both red
-                x->parent->color = Color::BLACK;
-                uncle->color = Color::BLACK;
-                x->parent->parent->color = Color::RED;
+                x->parent->color = BLACK;
+                uncle->color = BLACK;
+                x->parent->parent->color = RED;
                 x = x->parent->parent;
             }
             else {
@@ -156,8 +158,8 @@ void RedBlackTree<T>::fixInsertion(Node<T>* x) {
                 }
                 // Case 3: Parent is red, uncle is black, and x is left child
                 if (debugFlag) cout << " Case 3: Parent is red, uncle is black, and x is left child (BAR right)" << endl;
-                x->parent->color = Color::BLACK;
-                x->parent->parent->color = Color::RED;
+                x->parent->color = BLACK;
+                x->parent->parent->color = RED;
                 rotateRight(x->parent->parent);
             }
         }
@@ -171,11 +173,11 @@ void RedBlackTree<T>::fixInsertion(Node<T>* x) {
 
             }
 
-            if (uncle && uncle->color == Color::RED) {
+            if (uncle && uncle->color == RED) {
                 if (debugFlag) cout << " Case 1B: Parent and uncle are both red (RAF)" << endl;
-                x->parent->color = Color::BLACK;
-                uncle->color = Color::BLACK;
-                x->parent->parent->color = Color::RED;
+                x->parent->color = BLACK;
+                uncle->color = BLACK;
+                x->parent->parent->color = RED;
                 x = x->parent->parent;
             }
             else {
@@ -185,15 +187,15 @@ void RedBlackTree<T>::fixInsertion(Node<T>* x) {
                     rotateRight(x);
                 }
                 if (debugFlag) cout << " Case 3B: Parent is red, uncle is black, and x is right child (BAR left)" << endl;
-                x->parent->color = Color::BLACK;
-                x->parent->parent->color = Color::RED;
+                x->parent->color = BLACK;
+                x->parent->parent->color = RED;
                 rotateLeft(x->parent->parent);
             }
         }
     }
 
     // Make sure the root is ALWAYS black
-    root->color = Color::BLACK;
+    root->color = BLACK;
 }
 
 // Left rotation
@@ -244,7 +246,7 @@ template <typename T>
 void RedBlackTree<T>::rotateRight(Node<T>* x) {
     /* ---------------------------------------------------------
 
-    Right rotate around x (x goes to the right side) 
+    Right rotate around x (x goes to the right side)
             XP                      XP
             |                        |
             X        ------>         Y
@@ -344,24 +346,22 @@ RedBlackTree<int> loadSample2() {
 
 // ==================== Main function ===============================================================
 
-
 int main() {
-    
-    RedBlackTree<int> tree;
-    
 
+    RedBlackTree<int> tree;
 
     //Sample 1. Create a RBT. This sample shows left rotation & color flip 
     //tree = loadSample1(); 
-    
+
     //SAMPLE2 2. Create a RBT. This sample shows right rotation & color flip 
     tree = loadSample2();
 
     // Print the tree in [Root-Left-Right] order (aka. peorder)
-    cout << "\n Pre-Order tree ==> ";
+    cout << "\n Pre-Order RBT ==> ";
     tree.print();
 
     // Search for an element in the tree
+    cout << "\n Searching for a key in the tree..." << endl;
     int searchKey = 20;
     Node<int>* result = tree.search(searchKey);
     if (result) {
